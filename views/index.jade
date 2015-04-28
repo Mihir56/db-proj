@@ -1,5 +1,88 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 REDDIT
+  
+  a(href='/user/all') all users
+  br
+  a(href='/post/all') all posts
+  br
+  a(href='/interest/all') all interests
+  br
+
+  form(action='/user/create', method='get')
+    h2 Create User
+    
+    label username
+    input(name='username')
+    br
+    
+    label password
+    input(name='password')
+    br
+    
+    input('type'='submit')
+  
+  form(action='/interest/create', method='get')
+    h2 Create Interest
+    
+    label interestname
+    input(name='interestname')
+    br
+    
+    label description
+    textarea(name='description')
+    br
+    
+    input('type'='submit')
+  
+  form(action='/post/create', method='get')
+    h2 Create Post
+    
+    label interestname
+    input(name='interestname')
+    br
+    
+    label username
+    input(name='username')
+    br
+    
+    label title
+    input(name='title')
+    br
+    
+    label body
+    textarea(name='body')
+    br
+    
+    input('type'='submit')
+  
+  form(action='/comment/create', method='get')
+    h2 Create Comment
+
+    label username
+    input(name='username')
+    br
+
+    label postid
+    input(name='postid')
+    br
+    
+    label body
+    textarea(name='body')
+    br
+    
+    input('type'='submit')
+
+  form(action='/user/addInterest', method='get')
+    h2 Add Interest
+
+    label username
+    input(name='username')
+    br
+
+    label interestname
+    input(name='interestname')
+    br
+    
+    input('type'='submit')
