@@ -1,0 +1,26 @@
+include ../mixins/postCell
+
+extends ../layout
+
+block content
+  if interest
+    div
+      if !isFollowing
+        a(href='/interest/#{interest.interestname}/follow/') [follow]
+      else 
+        a(href='/interest/#{interest.interestname}/unfollow/').deleteButton [unfollow]
+
+    a.deleteButton(href='/interest/#{interest.interestname}/delete') [delete interest]
+    h1 #{interest.interestname}
+    p #{interest.description}
+
+    h3 posts
+    for post in posts
+      +postCell(post.postid, post.title, post.username, post.interestname)
+    else
+      p No posts exist. 
+        a(href='/post/new/') Create one!
+  else 
+    h1 Interest does not exist
+
+

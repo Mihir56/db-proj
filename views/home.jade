@@ -1,0 +1,14 @@
+include mixins/interestCell
+
+extends layout
+
+block content
+  h1 Welcome #{username}
+  h2 usertype: #{type}
+  h3 Following: 
+    a(href='/interest/all') (All Interests)
+  for interest in interest_list
+    +interestCell(interest.interestname)
+  else
+    p You are not following any interests.
+

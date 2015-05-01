@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1 Signp
+  p This will register you as a normal user, NOT a moderator or curator.
+  form(action='/user/new', method='POST')
+    div
+      label username
+      input(name='username')
+    div
+      label password
+      input(name='password', type='password')
+    div
+      input(type='submit', value='Submit')

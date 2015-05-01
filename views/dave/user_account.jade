@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .page-header
+    h3 Sign in
+  .row
+    .col-sm-6
+      h1 Hello #{username}
+      h3 Following
+      ul
+        -for i in following
+          h4 #{i}
+
+      h3 Other Subreddits
+        ul
+          -for i in other_interests
+            h4 #{i}
+
+
+    .col-sm-6
+      -if(isModerator){
+        h1(style="color:red" href="#") [Remove User?]  
+      -}
+      -for i in news
+        h2 #{i.article_Title}
+        h4.text-muted #{i.author}
+  hr

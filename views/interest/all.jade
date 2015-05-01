@@ -1,0 +1,12 @@
+include ../mixins/interestCell
+
+extends ../layout
+
+block content
+  h1 All Interests
+
+  for interest in interest_list
+    +interestCell(interest.interestname)
+  else
+    p No curators exist. Please have a curator create one.
+

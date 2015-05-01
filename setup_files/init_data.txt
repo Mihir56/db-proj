@@ -1,0 +1,41 @@
+use test;
+
+INSERT INTO Users SET 
+	username='moderator', 
+	password='moderator', 
+	type='moderator';
+
+INSERT INTO Users SET 
+	username='curator', 
+	password='curator', 
+	type='curator';
+
+INSERT INTO Users SET 
+	username='user', 	
+	password='user', 
+	type='user';
+
+INSERT INTO Interests SET 
+	interestname='misc', 
+	description='place for anything and everything';
+
+INSERT INTO CuratorPrivilege SET 
+	username='curator', 
+	interestname='misc';
+
+# TODO(vivek): all usernames must be users
+INSERT INTO InterestedIn SET 
+	username='user', 
+	interestname='misc';
+
+INSERT INTO Posts SET
+	postid=1, 
+	username='user', 
+	interestname='misc', 
+	title='Test Post', 
+	body='This post was automatically created with initialization scripts.';
+
+INSERT INTO Comments SET 
+	postid=1, 
+	username='user', 
+	body='this is a test comment';

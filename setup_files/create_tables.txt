@@ -1,0 +1,75 @@
+
+#### Create Database
+
+CREATE DATABASE test;
+use test;
+
+#### Create Table
+
+CREATE TABLE Comments(
+	commentid INT NOT NULL AUTO_INCREMENT,
+	postid INT NOT NULL,
+	username CHAR(100), # NULL username indicates a deleted user
+	body VARCHAR(1024) NOT NULL,
+	PRIMARY KEY (commentid)
+);
+
+CREATE TABLE InterestedIn (
+	username CHAR(100) NOT NULL,
+	interestname CHAR(100) NOT NULL,
+	PRIMARY KEY (interestname, username)
+);
+
+CREATE TABLE Interests(  
+	interestname CHAR(100) NOT NULL,
+	description VARCHAR(1024) NOT NULL,
+	PRIMARY KEY (interestname)
+);
+
+Create TABLE Posts(
+	postid INT NOT NULL AUTO_INCREMENT,
+	username CHAR(100), # NULL username indicates a deleted user
+	interestname CHAR(100) NOT NULL, 
+	body VARCHAR(1024) NOT NULL,
+	title CHAR(100) NOT NULL,
+	PRIMARY KEY (postid)
+);
+
+# User can create posts and comments. They can delete their own content but no one elses.
+# Curators can create interests and if they create one, they have access over it.
+# Moderators can create Curators, and Moderators, and Users. They can also delete users.
+CREATE TABLE Users(
+	username CHAR(100) NOT NULL, 
+	password CHAR(255) NOT NULL,
+	type ENUM('user', 'curator', 'moderator') DEFAULT 'user' NOT NULL,
+	PRIMARY KEY (username) 
+);
+
+# TODO(vivek): restrict reference to rows that have priviege ID
+Create TABLE CuratorPrivilege( 
+	username CHAR(100) NOT NULL,
+	interestname CHAR(100) NOT NULL,
+	PRIMARY KEY (username, interestname)
+);
+
+#### Constraints
+
+# Deleting a post also deletes its comments.
+ALTER TABLE Comments ADD FOREIGN KEY (postid) REFERENCES Posts (postid) ON DELETE CASCADE;
+
+# Deleted users' comments will still appear.
+ALTER TABLE Comments ADD FOREIGN KEY (username) REFERENCES Users (username) ON DELETE SET NULL;
+
+# IF a user or an interest is deleted, delete all InterestedIn rows.
+ALTER TABLE InterestedIn ADD FOREIGN KEY (username) REFERENCES Users (username) ON DELETE CASCADE;
+ALTER TABLE InterestedIn ADD FOREIGN KEY (interestname) REFERENCES Interests (interestname) ON DELETE CASCADE;
+
+# Deleted users' posts will still appear.
+ALTER TABLE Posts ADD FOREIGN KEY (username) REFERENCES Users (username) ON DELETE SET NULL;
+
+# Posts associated with a deleted interest will also be deleted.
+ALTER TABLE Posts ADD FOREIGN KEY (interestname) REFERENCES Interests (interestname) ON DELETE CASCADE;
+
+# IF a user or an interest is deleted, delete all CuratorPrivilege rows.
+ALTER TABLE CuratorPrivilege ADD FOREIGN KEY (username) REFERENCES Users (username) ON DELETE CASCADE;
+ALTER TABLE CuratorPrivilege ADD FOREIGN KEY (interestname) REFERENCES Interests (interestname) ON DELETE CASCADE;

@@ -6,3 +6,35 @@ body {
 a {
   color: #00B7FF;
 }
+
+.postCell {
+	outline: 1px #ddd solid;
+	padding: 10px;
+}
+.deleteButton {
+	color: red;
+}
+.headerButton {
+	width: 100px;
+	margin: 10px;
+	padding: 5px;
+}
+.header {
+	margin-bottom: 50px;
+}
+.postBody {
+	padding: 5px;
+	outline: 1px #ddd solid;
+	max-width: 600px;
+}
+
+.commentCell {
+	outline: 1px #ddd solid;
+	padding: 5px;
+	max-width: 600px;
+}
+.interestCell {
+	outline: 1px #ddd solid;
+	padding: 5px;
+	max-width: 600px;
+}

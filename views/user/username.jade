@@ -1,0 +1,14 @@
+include ../mixins/postCell
+
+extends ../layout
+
+block content
+  h1 #{username}
+  
+  h3 posts
+  for post in posts
+    +postCell(post.postid, post.title, post.username, post.interestname)
+  else
+    p user has not made any posts. 
+
+

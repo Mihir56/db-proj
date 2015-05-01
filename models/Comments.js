@@ -20,15 +20,18 @@ var SQL_ALL_COMMENTS_FOR_POST = multiline(function(){/*
 	SELECT C.postid, C.commentid, C.username, C.body
 	FROM Comments as C
 	WHERE C.postid = ?
-	ORDER BY C.commentid DESC;
+	ORDER BY C.commentid ASC;
 */});
 
-var Comments = {};
+var SQL_DELETE_COMMENT_ID = multiline(function(){/*
+	DELETE FROM Comments 
+	WHERE commentid = ?;
+*/});
 
 /**
  Creates necessary table, given valid mysql connection
  */
-Comments.init = function(connection, success) {
+exports.init = function(connection, success) {
 	connection.query(SQL_CREATE_TABLE, success);
 }
 
@@ -39,15 +42,17 @@ Comments.init = function(connection, success) {
 	postid
  }
  */
-Comments.insert = function(connection, obj, success) {
+exports.insert = function(connection, obj, success) {
 	connection.query(SQL_INSERT_COMMENT, obj, success);
 }
 
 /**
  success contains an array of Things objects.
  */
-Comments.allForPost = function(connection, postID, success) {
+exports.allForPost = function(connection, postID, success) {
 	connection.query(SQL_ALL_COMMENTS_FOR_POST, [postID], success);
 }
 
-exports.obj = Comments;
+exports.delete = function(connection, commentid, success) {
+	connection.query(SQL_DELETE_COMMENT_ID, [commentid], success);
+}

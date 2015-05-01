@@ -36,17 +36,22 @@ var SQL_ALL_POSTS_FOR_INTEREST = multiline(function(){/*
 	ORDER BY P.postid DESC;
 */});
 
+var SQL_ALL_POSTS_FOR_USER = multiline(function(){/*
+	SELECT P.username, P.title, P.postid, P.interestname
+	FROM Posts as P
+	WHERE P.username = ?
+	ORDER BY P.postid DESC;
+*/});
+
 var SQL_DELETE_POST_ID = multiline(function(){/*
 	DELETE FROM Posts 
 	WHERE postid = ?;
 */});
 
-var Posts = {};
-
 /**
  Creates necessary table, given valid mysql connection
  */
-Posts.init = function(connection, success) {
+exports.init = function(connection, success) {
 	connection.query(SQL_CREATE_TABLE, success);
 }
 
@@ -58,25 +63,27 @@ Posts.init = function(connection, success) {
 	title
  }
  */
-Posts.createNew = function(connection, obj, success) {
+exports.createNew = function(connection, obj, success) {
 	connection.query(SQL_CREATE_POST, obj, success);
 }
 
-Posts.all = function(connection, success) {
+exports.all = function(connection, success) {
 	connection.query(SQL_SELECT_ALL_POSTS, success);
 }
 
-Posts.allForInterest = function(connection, interestname, success) {
+exports.allForInterest = function(connection, interestname, success) {
 	connection.query(SQL_ALL_POSTS_FOR_INTEREST, [interestname], success);
 }
 
-Posts.details = function(connection, id, success) {
+exports.allForUser = function(connection, username, success) {
+	connection.query(SQL_ALL_POSTS_FOR_USER, [username], success);
+}
+
+exports.details = function(connection, id, success) {
 	connection.query(SQL_DETAILS_FOR_POST_ID, [id], success);
 }
 
 // TODO(vivek): on delete handlers
-Posts.delete = function(connection, id, success) {
+exports.delete = function(connection, id, success) {
 	connection.query(SQL_DELETE_POST_ID, [id], success);
 }
-
-exports.obj = Posts;

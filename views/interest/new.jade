@@ -1,0 +1,13 @@
+extends ../layout
+
+block content
+  h1 Create Interest
+  form(action='/interest/new', method='post')
+    div
+      label interest name
+      input(name='interestname')
+    div
+      label description
+      textarea(name='description', rows="10", cols="70")
+    div
+      input(type='submit', value='Submit')

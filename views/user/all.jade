@@ -1,0 +1,11 @@
+include ../mixins/userCell
+
+extends ../layout
+
+block content
+  h1 all users
+  for u in users
+    +userCell(u.username)
+  else
+    p No users exist.
+

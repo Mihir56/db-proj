@@ -1,0 +1,8 @@
+mixin postCell(postid, title, username, interestname)
+  div.postCell
+    h4
+      a(href='/post/#{postid}/')= title
+    p user: 
+      a(href='/user/#{username}/')= username
+    p interest: 
+      a(href='/interest/#{interestname}/')= interestname

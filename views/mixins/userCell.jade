@@ -1,0 +1,4 @@
+mixin userCell(username)
+  div
+    a(href='/user/#{username}/')= username   
+    a.deleteButton(href='/user/#{username}/delete')  [delete]

@@ -1,0 +1,10 @@
+extends layout
+
+block content  
+  .row.text-center
+    -for i in interests
+      h2 
+        a(href="/interest/#{i.interestname}") #{i.interestname} 
+      h4.text-muted #{i.description}
+    
+  hr

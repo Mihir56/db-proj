@@ -1,0 +1,12 @@
+extends layout
+
+block content  
+  h1 Welcome to #{title}!
+  .row.text-center
+    -for i in posts
+      h2 
+        a(href="/post/#{i.postid}") #{i.title} 
+      h4.text-muted by #{i.username}
+      
+    
+  hr

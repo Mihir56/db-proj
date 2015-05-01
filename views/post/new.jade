@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  h1 Create Post
+  form(action='/post/new', method='post')
+    div
+      label title
+      input(name='title')
+    div
+      label interest
+      select(name='interestname')
+        for interest in interests
+          option(value='#{interest.interestname}')= interest.interestname
+    div
+      label body
+      textarea(name='body', rows="10", cols="70")
+    div
+      input(type='submit', value='Submit')

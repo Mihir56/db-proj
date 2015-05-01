@@ -5,7 +5,7 @@ var SQL_CREATE_TABLE = multiline(function(){/*
 		interestname CHAR(100) NOT NULL,
 		description VARCHAR(1024) NOT NULL,
 		PRIMARY KEY (interestname)
-	) 
+	);
 */});
 
 var SQL_INSERT_INTEREST = multiline(function(){/*
@@ -13,17 +13,26 @@ var SQL_INSERT_INTEREST = multiline(function(){/*
 */});
 
 var SQL_ALL_INTERESTS = multiline(function(){/*
-	SELECT I.interestname, I.description
+	SELECT I.interestname
 	FROM Interests as I
 	ORDER BY I.interestname ASC;
 */});
 
-var Interests = {};
+var SQL_SELECT_INTEREST_DETAILS = multiline(function(){/*
+	SELECT I.interestname, I.description
+	FROM Interests as I
+	WHERE I.interestname = ?;
+*/});
+
+var SQL_DELETE_INTERESTNAME = multiline(function(){/*
+	DELETE FROM Interests 
+	WHERE interestname = ?;
+*/});
 
 /**
  Creates necessary table, given valid mysql connection
  */
-Interests.init = function(connection, success) {
+exports.init = function(connection, success) {
 	connection.query(SQL_CREATE_TABLE, success);
 }
 
@@ -33,12 +42,18 @@ Interests.init = function(connection, success) {
 	description
  }
  */
-Interests.insert = function(connection, obj, success) {
+exports.insert = function(connection, obj, success) {
 	connection.query(SQL_INSERT_INTEREST, obj, success);
 }
 
-Interests.all = function(connection, success) {
+exports.all = function(connection, success) {
 	connection.query(SQL_ALL_INTERESTS, success);
 }
 
-exports.obj = Interests;
+exports.details = function(connection, interestname, success) {
+	connection.query(SQL_SELECT_INTEREST_DETAILS, [interestname], success);
+}
+
+exports.delete = function(connection, interestname, success) {
+	connection.query(SQL_DELETE_INTERESTNAME, [interestname], success);	
+}

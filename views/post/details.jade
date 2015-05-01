@@ -1,0 +1,22 @@
+include ../mixins/commentCell
+
+extends ../layout
+
+block content
+  a.deleteButton(href='/post/#{post.postid}/delete') [delete post]
+  h1 #{post.title}
+  p user: 
+    a(href='/user/#{post.username}/')= post.username
+  p interest: 
+    a(href='/interest/#{post.interestname}/')= post.interestname
+  p.postBody #{post.body}
+  h3 comments
+  for comment in comments
+    +commentCell(comment.postid, comment.commentid, comment.username, comment.body)
+  h3 write comment
+  form(action='/post/#{post.postid}/comment/new', method='post')
+    div
+      textarea(name='body', rows="5", cols="40")
+    div
+      input(type='submit', value='Submit')
+

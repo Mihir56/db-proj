@@ -1,0 +1,12 @@
+include ../mixins/postCell
+
+extends ../layout
+
+block content
+  h1 All Posts
+  for post in posts
+    +postCell(post.postid, post.title, post.username, post.interestname)
+  else
+    p No posts exist. 
+      a(href='/post/new') Create one!
+
