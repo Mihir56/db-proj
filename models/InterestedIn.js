@@ -1,15 +1,5 @@
 var multiline = require('multiline').stripIndent;
 
-var SQL_CREATE_TABLE = multiline(function(){/*
-	CREATE TABLE IF NOT EXISTS InterestedIn (
-		username CHAR(100) NOT NULL,
-		interestname CHAR(100) NOT NULL,
-		PRIMARY KEY (interestname, username),
-		FOREIGN KEY (username) REFERENCES Users (username),
-		FOREIGN KEY (interestname) REFERENCES Interests (interestname)
-	)
-*/});
-
 var SQL_INSERT_INTERESTED_IN = multiline(function(){/*
 	INSERT INTO InterestedIn SET ?;
 */});
@@ -32,12 +22,6 @@ var SQL_CHECK_FOLLOWING = multiline(function(){/*
 	Where I.username = ? AND I.interestname = ?;
 */})
 
-/**
- Creates necessary table, given valid mysql connection
- */
-exports.init = function(connection, success) {
-	connection.query(SQL_CREATE_TABLE, success);
-}
 
 /**
  obj = {

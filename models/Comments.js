@@ -1,17 +1,5 @@
 var multiline = require('multiline').stripIndent;
 
-var SQL_CREATE_TABLE = multiline(function(){/*
-	CREATE TABLE IF NOT EXISTS Comments(
-		commentid INT NOT NULL AUTO_INCREMENT,
-		postid INT NOT NULL,
-		username CHAR(100) NOT NULL,
-		body VARCHAR(1024) NOT NULL,
-		PRIMARY KEY (commentid), 
-		FOREIGN KEY (postid) REFERENCES Posts (postid),
-		FOREIGN KEY (username) REFERENCES Users (username)
-	)
-*/});
-
 var SQL_INSERT_COMMENT = multiline(function(){/*
 	INSERT INTO Comments SET ? ;
 */});
@@ -28,12 +16,6 @@ var SQL_DELETE_COMMENT_ID = multiline(function(){/*
 	WHERE commentid = ?;
 */});
 
-/**
- Creates necessary table, given valid mysql connection
- */
-exports.init = function(connection, success) {
-	connection.query(SQL_CREATE_TABLE, success);
-}
 
 /**
  obj = {

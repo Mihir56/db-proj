@@ -1,13 +1,5 @@
 var multiline = require('multiline').stripIndent;
 
-var SQL_CREATE_TABLE = multiline(function(){/*
-	CREATE TABLE IF NOT EXISTS Interests(  
-		interestname CHAR(100) NOT NULL,
-		description VARCHAR(1024) NOT NULL,
-		PRIMARY KEY (interestname)
-	);
-*/});
-
 var SQL_INSERT_INTEREST = multiline(function(){/*
 	INSERT INTO Interests SET ?;
 */});
@@ -29,12 +21,6 @@ var SQL_DELETE_INTERESTNAME = multiline(function(){/*
 	WHERE interestname = ?;
 */});
 
-/**
- Creates necessary table, given valid mysql connection
- */
-exports.init = function(connection, success) {
-	connection.query(SQL_CREATE_TABLE, success);
-}
 
 /**
  obj = {

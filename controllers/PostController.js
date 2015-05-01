@@ -104,12 +104,27 @@ var postDetailsRoute = function(connection, req, res) {
 }
 
 var deletePostRoute = function(connection, req, res) {
+	var username = req.user.username;
 	var postid = req.param('postid');
-	Posts.delete(connection, postid, function(err, rows) {
-		if (err) {
-			res.render('message', {'message': 'Post with this ID does not exist.'});
+	Posts.details(connection, postid, function(err, rows) {
+		if (rows && (rows.length > 0)) {
+			var post = rows[0];
+			var interestname = post['interestname'];
+			CuratorPrivileges.checkPrivilege(connection, username, interestname, function(err, rows) {
+				if (rows && (rows.length > 0)) {
+					Posts.delete(connection, postid, function(err, rows) {
+						if (err) {
+							res.render('message', {'message': 'ERROR unable to delete post.'});
+						} else {
+							res.render('message', {'message': 'Post ('+ postid +') successfully deleted.'});
+						}
+					});
+				} else {
+					res.render('message', {'message': 'ERROR you dont have permission to delete this post'});
+				}
+			});
 		} else {
-			res.render('message', {'message': 'Post ('+ postid +') successfully deleted.'});
+			res.render('message', {'message': 'Post with this ID does not exist.'});
 		}
 	});
 }
@@ -135,13 +150,28 @@ var newCommentRoute = function(connection, req, res) {
 }
 
 var deleteCommentRoute = function(connection, req, res) {
+	var username = req.user.username;
 	var postid = req.param('postid');
 	var commentid = req.param('commentid');
-	Comments.delete(connection, commentid, function(err, rows) {
-		if (err) {
-			res.render('message', {'message': 'Comment with this ID does not exist.'});
+	Posts.details(connection, postid, function(err, rows) {
+		if (rows && (rows.length > 0)) {
+			var post = rows[0];
+			var interestname = post['interestname'];
+			CuratorPrivileges.checkPrivilege(connection, username, interestname, function(err, rows) {
+				if (rows && (rows.length > 0)) {
+					Comments.delete(connection, commentid, function(err2, rows2) {
+						if (err || err2) {
+							res.render('message', {'message': 'ERROR deleting comment.'});
+						} else {
+							res.redirect('/post/' + postid);
+						}
+					});
+				} else {
+					res.render('message', {'message': 'ERROR you dont have permission to delete this comment'});
+				}
+			});
 		} else {
-			res.redirect('/post/' + postid);
+			res.render('message', {'message': 'Comment with this ID does not exist.'});
 		}
 	});
 }

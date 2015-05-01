@@ -2,6 +2,7 @@ var utility = require('../utility');
 var Interests = require('../models/Interests');
 var InterestedIn = require('../models/InterestedIn');
 var Posts = require('../models/Posts');
+var CuratorPrivileges = require('../models/CuratorPrivileges');
 
 exports.registerRoutes = function(app, connection){
 	app.get('/interest/all', 
@@ -73,15 +74,24 @@ var detailsInterestRoute = function(connection, req, res) {
 
 // TODO(vivek): use curator permssions
 var deleteInterestRoute = function(connection, req, res) {
+	var username = req.user.username;
 	var interestname = req.param('interestname');
-	Interests.delete(connection, interestname, function(err, rows) {
-		if (err) {
-			res.render('message', {
-				'message': 'ERROR. unable to delete interest'
+	CuratorPrivileges.checkPrivilege(connection, username, interestname, function(err, rows) {
+		if (rows && (rows.length > 0)) {
+			Interests.delete(connection, interestname, function(err2, rows2) {
+				if (err || err2) {
+					res.render('message', {
+						'message': 'ERROR. unable to delete interest'
+					});
+				} else {
+					res.render('message', {
+						'message': 'successfully deleted interest: \"' + interestname + '\"'
+					});
+				}
 			});
 		} else {
 			res.render('message', {
-				'message': 'successfully deleted interest: \"' + interestname + '\"'
+				'message': 'ERROR you do not have permission to delete this interest.'
 			});
 		}
 	});
@@ -92,21 +102,27 @@ var newInterestFormRoute = function(connection, req, res) {
 }
 
 var newInterestRoute = function(connection, req, res) {
+	var username = req.user.username;
 	var interestname = req.body.interestname;
 	var description = req.body.description;
 	Interests.insert(connection, {
 		'interestname': interestname,
 		'description': description,
 	}, function(err, rows) {
-		if (err) {
-			res.render('message', {
-				'message': 'ERROR. unable to create interest'
-			});
-		} else {
-			res.render('message', {
-				'message': 'successfully created interest: \"' + interestname + '\"'
-			});
-		}
+		CuratorPrivileges.insert(connection, {
+			'username': username,
+			'interestname': interestname,
+		}, function(err2, rows2) {
+			if (err || err2) {
+				res.render('message', {
+					'message': 'ERROR. unable to create interest'
+				});
+			} else {
+				res.render('message', {
+					'message': 'successfully created interest: \"' + interestname + '\"'
+				});
+			}
+		});
 	});
 }
 

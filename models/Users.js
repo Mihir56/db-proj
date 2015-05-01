@@ -1,15 +1,6 @@
 var multiline = require('multiline').stripIndent;
 var mysql = require('mysql');
 
-var SQL_CREATE_TABLE = multiline(function(){/*
-	CREATE TABLE IF NOT EXISTS Users(
-		username CHAR(100) NOT NULL, 
-		password CHAR(255) NOT NULL,
-		isModerator BOOLEAN NOT NULL, 
-		PRIMARY KEY (username)
-	);
-*/});
-
 var SQL_REGISTER_USER = multiline(function(){/*
 	INSERT INTO Users SET ?;
 */});
@@ -35,12 +26,6 @@ var SQL_DELETE_USER = multiline(function(){/*
 	WHERE username = ? ;
 */});
 
-/**
- Creates necessary table, given valid mysql connection
- */
-exports.init = function(connection, success) {
-	connection.query(SQL_CREATE_TABLE, success);
-}
 
 /**
  obj = {
