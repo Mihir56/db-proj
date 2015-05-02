@@ -58,14 +58,14 @@ Create TABLE CuratorPrivilege(
 ALTER TABLE Comments ADD FOREIGN KEY (postid) REFERENCES Posts (postid) ON DELETE CASCADE;
 
 # Deleted users' comments will still appear.
-ALTER TABLE Comments ADD FOREIGN KEY (username) REFERENCES Users (username) ON DELETE SET NULL;
+ALTER TABLE Comments ADD FOREIGN KEY (username) REFERENCES Users (username) ON DELETE CASCADE;
 
 # IF a user or an interest is deleted, delete all InterestedIn rows.
 ALTER TABLE InterestedIn ADD FOREIGN KEY (username) REFERENCES Users (username) ON DELETE CASCADE;
 ALTER TABLE InterestedIn ADD FOREIGN KEY (interestname) REFERENCES Interests (interestname) ON DELETE CASCADE;
 
 # Deleted users' posts will still appear.
-ALTER TABLE Posts ADD FOREIGN KEY (username) REFERENCES Users (username) ON DELETE SET NULL;
+ALTER TABLE Posts ADD FOREIGN KEY (username) REFERENCES Users (username) ON DELETE CASCADE;
 
 # Posts associated with a deleted interest will also be deleted.
 ALTER TABLE Posts ADD FOREIGN KEY (interestname) REFERENCES Interests (interestname) ON DELETE CASCADE;
