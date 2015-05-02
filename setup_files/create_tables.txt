@@ -12,19 +12,19 @@ CREATE TABLE Comments(
 	username CHAR(100), # NULL username indicates a deleted user
 	body VARCHAR(1024) NOT NULL,
 	PRIMARY KEY (commentid)
-);
+) ENGINE = INNODB;
 
 CREATE TABLE InterestedIn (
 	username CHAR(100) NOT NULL,
 	interestname CHAR(100) NOT NULL,
 	PRIMARY KEY (interestname, username)
-);
+) ENGINE = INNODB;
 
 CREATE TABLE Interests(  
 	interestname CHAR(100) NOT NULL,
 	description VARCHAR(1024) NOT NULL,
 	PRIMARY KEY (interestname)
-);
+) ENGINE = INNODB;
 
 Create TABLE Posts(
 	postid INT NOT NULL AUTO_INCREMENT,
@@ -33,7 +33,7 @@ Create TABLE Posts(
 	body VARCHAR(1024) NOT NULL,
 	title CHAR(100) NOT NULL,
 	PRIMARY KEY (postid)
-);
+) ENGINE = INNODB;
 
 # User can create posts and comments. They can delete their own content but no one elses.
 # Curators can create interests and if they create one, they have access over it.
@@ -43,14 +43,14 @@ CREATE TABLE Users(
 	password CHAR(255) NOT NULL,
 	type ENUM('user', 'curator', 'moderator') DEFAULT 'user' NOT NULL,
 	PRIMARY KEY (username) 
-);
+) ENGINE = INNODB;
 
 # TODO(vivek): restrict reference to rows that have priviege ID
 Create TABLE CuratorPrivilege( 
 	username CHAR(100) NOT NULL,
 	interestname CHAR(100) NOT NULL,
 	PRIMARY KEY (username, interestname)
-);
+) ENGINE = INNODB;
 
 #### Constraints
 
