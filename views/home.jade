@@ -5,10 +5,15 @@ extends layout
 block content
   h1 Welcome #{username}
   h2 usertype: #{type}
-  h3 Following: 
-    a(href='/interest/all') (All Interests)
-  for interest in interest_list
-    +interestCell(interest.interestname)
-  else
-    p You are not following any interests.
-
+  - if (user.type == 'user') {
+    h3 Following: 
+      a(href='/interest/all') (All Interests)
+    for interest in interest_list
+      +interestCell(interest.interestname, user.type)
+    else
+      p You are not following any interests.
+  - } else if (user.type == 'curator') {
+    p As curator you can create interests, and delete comments and posts from any Interest you have craeted.
+  - } else if (user.type == 'moderator') {
+    p As moderator you can create, and delete users of any kind. 
+  - }

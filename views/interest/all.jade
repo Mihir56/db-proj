@@ -6,7 +6,7 @@ block content
   h1 All Interests
 
   for interest in interest_list
-    +interestCell(interest.interestname)
+    +interestCell(interest.interestname, user.type)
   else
-    p No curators exist. Please have a curator create one.
+    p No interests exist. Please have a curator create one.
 

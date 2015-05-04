@@ -57,10 +57,12 @@ var newUserRoute = function(connection, req, res) {
 	}, function(err, rows){
 		if (err) {
 			res.render('message', {
+				'user': req.user,
 				'message': 'ERROR ('+err+')'
 			});
 		} else {
 			res.render('message', {
+				'user': req.user,
 				'message': 'created user ('+username+')'
 			});
 		}
@@ -68,7 +70,9 @@ var newUserRoute = function(connection, req, res) {
 }
 
 var newUserFormRoute = function(connection, req, res) {
-	res.render('user/new');
+	res.render('user/new', {
+		'user': req.user,
+	});
 }
 
 var userHomeRoute = function(connection, req, res) {
@@ -79,6 +83,7 @@ var userHomeRoute = function(connection, req, res) {
 			var data = {};
 			data['username'] = req.user['username'];
 			data['type'] = req.user['type'];
+			data['user'] = req.user;
 
 			if (rows && rows.length > 0) {
 				console.log(rows);
@@ -96,7 +101,8 @@ var userHomeRoute = function(connection, req, res) {
 var allUserRoute = function(connection, req, res) {
 	Users.all(connection, function(err, rows){
 		res.render('user/all', {
-			'users': rows
+			'users': rows,
+			'user': req.user,
 		});
 	});
 }
@@ -107,6 +113,7 @@ var userDetailsRoute = function(connection, req, res) {
 		res.render('user/username', {
 			'username': username, 
 			'posts': rows,
+			'user': req.user,
 		});
 	});
 }
@@ -116,10 +123,12 @@ var deleteUserRoute = function(connection, req, res) {
 	Users.delete(connection, username, function(err, rows){
 		if (err) {
 			res.render('message', {
+				'user': req.user,
 				'message': 'ERROR ('+err+')'
 			});
 		} else {
 			res.render('message', {
+				'user': req.user,
 				'message': 'deleted user ('+username+')'
 			});
 		}

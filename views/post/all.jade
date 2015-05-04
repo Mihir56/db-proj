@@ -5,8 +5,10 @@ extends ../layout
 block content
   h1 All Posts
   for post in posts
-    +postCell(post.postid, post.title, post.username, post.interestname)
+    +postCell(post.postid, post.title, post.username, post.interestname, user.type)
   else
     p No posts exist. 
-      a(href='/post/new') Create one!
+      - if (user.type == 'user') {
+        a(href='/post/new') Create one!
+      - }
 

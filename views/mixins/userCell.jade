@@ -1,4 +1,6 @@
-mixin userCell(username)
+mixin userCell(username, type)
   div
-    a(href='/user/#{username}/')= username   
-    a.deleteButton(href='/user/#{username}/delete')  [delete]
+    a(href='/user/#{username}/')= username
+    - if (type == 'moderator') {
+      a.deleteButton(href='/user/#{username}/delete')  [delete]
+    - }

@@ -39,6 +39,7 @@ var allInterestsRoute = function(connection, req, res) {
 		var data = {};
 		data['username'] = req.user['username'];
 		data['type'] = req.user['type'];
+		data['user'] = req.user;
 
 		if (rows && rows.length > 0) {
 			data['interest_list'] = rows;
@@ -58,13 +59,14 @@ var detailsInterestRoute = function(connection, req, res) {
 		if (rows && rows.length > 0) {
 			interest = rows[0];
 		}
-		Posts.allForInterest(connection, interestname, function(err, rows){
+		Posts.allForInterest(connection, interestname, function(err, post_rows){
 			InterestedIn.checkFollowing(connection, username, interestname, function(err, rows) {
 				var isFollowing = (rows && (rows.length > 0));
 				console.log(isFollowing);
 				res.render('interest/details', {
+					'user': req.user,
 					'interest' : interest,
-					'posts': rows,
+					'posts': post_rows,
 					'isFollowing': isFollowing,
 				});
 			});
@@ -81,16 +83,19 @@ var deleteInterestRoute = function(connection, req, res) {
 			Interests.delete(connection, interestname, function(err2, rows2) {
 				if (err || err2) {
 					res.render('message', {
+						'user': req.user,
 						'message': 'ERROR. unable to delete interest'
 					});
 				} else {
 					res.render('message', {
+						'user': req.user,
 						'message': 'successfully deleted interest: \"' + interestname + '\"'
 					});
 				}
 			});
 		} else {
 			res.render('message', {
+				'user': req.user,
 				'message': 'ERROR you do not have permission to delete this interest.'
 			});
 		}
@@ -98,7 +103,9 @@ var deleteInterestRoute = function(connection, req, res) {
 }
 
 var newInterestFormRoute = function(connection, req, res) {
-	res.render('interest/new');
+	res.render('interest/new', {
+		'user': req.user,
+	});
 }
 
 var newInterestRoute = function(connection, req, res) {
@@ -114,11 +121,15 @@ var newInterestRoute = function(connection, req, res) {
 			'interestname': interestname,
 		}, function(err2, rows2) {
 			if (err || err2) {
+				console.log(err);
+				console.log(err2);
 				res.render('message', {
+					'user': req.user,
 					'message': 'ERROR. unable to create interest'
 				});
 			} else {
 				res.render('message', {
+					'user': req.user,
 					'message': 'successfully created interest: \"' + interestname + '\"'
 				});
 			}
@@ -136,10 +147,12 @@ var followInterestRoute = function(connection, req, res) {
 	}, function(err, rows) {
 		if (err) {
 			res.render('message', {
+				'user': req.user,
 				'message': 'ERROR. unable to follow interest'
 			});
 		} else {
 			res.render('message', {
+				'user': req.user,
 				'message': 'successfully followed interest: \"' + interestname + '\"'
 			});
 		}
@@ -156,10 +169,12 @@ var unfollowInterestRoute = function(connection, req, res) {
 	}, function(err, rows) {
 		if (err) {
 			res.render('message', {
+				'user': req.user,
 				'message': 'ERROR. unable to unfollow interest'
 			});
 		} else {
 			res.render('message', {
+				'user': req.user,
 				'message': 'successfully unfollowed interest: \"' + interestname + '\"'
 			});
 		}

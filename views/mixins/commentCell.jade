@@ -1,6 +1,8 @@
-mixin commentCell(postid, commentid, username, body)
+mixin commentCell(postid, commentid, username, body, type)
   div.commentCell
-    a.deleteButton(href='/post/#{postid}/comment/#{commentid}/delete') [delete]
+    - if (type == 'curator') {
+      a.deleteButton(href='/post/#{postid}/comment/#{commentid}/delete') [delete]
+    - }
     h4
       a(href='/user/#{username}/')= username
     p= body

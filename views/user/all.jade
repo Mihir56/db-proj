@@ -5,7 +5,7 @@ extends ../layout
 block content
   h1 all users
   for u in users
-    +userCell(u.username)
+    +userCell(u.username, user.type)
   else
     p No users exist.
 

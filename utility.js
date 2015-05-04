@@ -40,7 +40,10 @@ exports.authenticatedEndpointWithType = function(userType) {
 		if (req.isAuthenticated() && req.user.type === userType) {
 			next();
 		} else {
-			res.redirect('/');
+			res.render('message', {
+				'user': req.user,
+				'message': 'You do not have permission to do this operation.'
+			});
 		}
 	}
 }

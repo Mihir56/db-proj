@@ -2,6 +2,7 @@ var utility = require('../utility');
 var Posts = require('../models/Posts');
 var Interests = require('../models/Interests');
 var Comments = require('../models/Comments');
+var CuratorPrivileges = require('../models/CuratorPrivileges');
 
 // TODO(vivek): allow user to delete his own posts and comments.
 
@@ -37,7 +38,9 @@ exports.registerRoutes = function(app, connection){
 
 var allPostsRoute = function(connection, req, res) {
 	Posts.all(connection, function(err, rows){
-		res.render('post/all', {'posts': rows});
+		res.render('post/all', {
+			'user': req.user,
+			'posts': rows});
 	});	
 }
 
@@ -45,10 +48,12 @@ var newPostFormRoute = function(connection, req, res) {
 	Interests.all(connection, function(err, rows) {
 		if (rows && rows.length > 0) {
 			res.render('post/new', {
+				'user': req.user,
 				'interests': rows
 			});
 		} else {
 			res.render('message', {
+				'user': req.user,
 				'message': 'Unable to create post because no interests exist. Please have a curator create an interest.'
 			});
 		}
@@ -70,16 +75,19 @@ var newPostRoute = function(connection, req, res) {
 		}, function(err, rows) {
 			if (err) {
 				res.render('message', {
+					'user': req.user,
 					'message': 'ERROR. unable to create post'
 				});
 			} else {
 				res.render('message', {
+					'user': req.user,
 					'message': 'successfully created post: \"' + title + '\"'
 				});
 			}
 		});
 	} else {
 		res.render('message', {
+			'user': req.user,
 			'message': 'ERROR. Please do not leave any part of form blank.'
 		});
 	}
@@ -95,10 +103,17 @@ var postDetailsRoute = function(connection, req, res) {
 				if (rows && rows.length > 0) {
 					comments = rows;
 				}
-				res.render('post/details', {'post': post, 'comments': comments});
+				res.render('post/details', {
+					'user': req.user,
+					'post': post, 
+					'comments': comments
+				});
 			});
 		} else {
-			res.render('message', {'message': 'Post with this ID does not exist'});
+			res.render('message', {
+				'user': req.user,
+				'message': 'Post with this ID does not exist'
+			});
 		}
 	});	
 }
@@ -114,17 +129,29 @@ var deletePostRoute = function(connection, req, res) {
 				if (rows && (rows.length > 0)) {
 					Posts.delete(connection, postid, function(err, rows) {
 						if (err) {
-							res.render('message', {'message': 'ERROR unable to delete post.'});
+							res.render('message', {
+								'user': req.user,
+								'message': 'ERROR unable to delete post.'
+							});
 						} else {
-							res.render('message', {'message': 'Post ('+ postid +') successfully deleted.'});
+							res.render('message', {
+								'user': req.user,
+								'message': 'Post ('+ postid +') successfully deleted.'
+							});
 						}
 					});
 				} else {
-					res.render('message', {'message': 'ERROR you dont have permission to delete this post'});
+					res.render('message', {
+						'user': req.user,
+						'message': 'ERROR you dont have permission to delete this post'
+					});
 				}
 			});
 		} else {
-			res.render('message', {'message': 'Post with this ID does not exist.'});
+			res.render('message', {
+				'user': req.user,
+				'message': 'Post with this ID does not exist.'
+			});
 		}
 	});
 }
@@ -141,6 +168,7 @@ var newCommentRoute = function(connection, req, res) {
 	}, function(err, rows) {
 		if (err) {
 			res.render('message', {
+				'user': req.user,
 				'message': 'ERROR unable to create post.'
 			});
 		} else {
@@ -161,17 +189,23 @@ var deleteCommentRoute = function(connection, req, res) {
 				if (rows && (rows.length > 0)) {
 					Comments.delete(connection, commentid, function(err2, rows2) {
 						if (err || err2) {
-							res.render('message', {'message': 'ERROR deleting comment.'});
+							res.render('message', {
+								'user': req.user,
+								'message': 'ERROR deleting comment.'});
 						} else {
 							res.redirect('/post/' + postid);
 						}
 					});
 				} else {
-					res.render('message', {'message': 'ERROR you dont have permission to delete this comment'});
+					res.render('message', {
+						'user': req.user,
+						'message': 'ERROR you dont have permission to delete this comment'});
 				}
 			});
 		} else {
-			res.render('message', {'message': 'Comment with this ID does not exist.'});
+			res.render('message', {
+				'user': req.user,
+				'message': 'Comment with this ID does not exist.'});
 		}
 	});
 }
