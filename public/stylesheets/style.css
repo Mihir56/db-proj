@@ -1,6 +1,7 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image: url(../swirl_pattern.png);
 }
 
 a {
@@ -38,3 +39,4 @@ a {
 	padding: 5px;
 	max-width: 600px;
 }
+
