@@ -2,15 +2,25 @@ body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background-image: url(../swirl_pattern.png);
+  text-align: center;
 }
 
 a {
   color: #00B7FF;
 }
+.username_text {
+	color: #000;
+}
+.username {
+	color: rgb(9, 92, 120);
+}
 
 .postCell {
 	outline: 1px #ddd solid;
 	padding: 10px;
+	background-color: white;
+	margin: 0 auto;
+	margin-bottom: 10px;
 }
 .deleteButton {
 	color: red;
@@ -27,16 +37,25 @@ a {
 	padding: 5px;
 	outline: 1px #ddd solid;
 	max-width: 600px;
+	background-color: white;
+	margin: 0 auto;
+	margin-bottom: 10px;
 }
 
 .commentCell {
 	outline: 1px #ddd solid;
 	padding: 5px;
 	max-width: 600px;
+	background-color: white;
+	margin: 0 auto;
+	margin-bottom: 10px;
 }
 .interestCell {
 	outline: 1px #ddd solid;
 	padding: 5px;
 	max-width: 600px;
+	background-color: white;
+	margin: 0 auto;
+	margin-bottom: 10px;
 }
 

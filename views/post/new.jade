@@ -4,15 +4,18 @@ block content
   h1 Create Post
   form(action='/post/new', method='post')
     div
-      label title
+      h2 title
+      br
       input(name='title')
     div
-      label interest
+      h2 interest
+      br
       select(name='interestname')
         for interest in interests
           option(value='#{interest.interestname}')= interest.interestname
     div
-      label body
+      h2 body
+      br
       textarea(name='body', rows="10", cols="70")
     div
       input(type='submit', value='Submit')

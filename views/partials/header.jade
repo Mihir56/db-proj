@@ -1,6 +1,9 @@
 if user
   div.header
-    
+    div.username_text
+      h1 Hello 
+        b.username #{user.username} 
+
     a.headerButton(href='/home') home
     
     a.headerButton(href='/post/all') all posts
